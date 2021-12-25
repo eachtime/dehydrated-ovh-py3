@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.INFO)
 
-client = ovh.Client()
 PATTERN_DOMAIN = re.compile(r'^(.*)\.([^\.]+\.[^\.]+)$')
 PATTERN_SUB_DOMAIN = re.compile(r'^(.*)\.([^\.]+)$')
 PATTERN_LOG_LEVEL = re.compile(r'^--level=(\w+)$')
@@ -100,11 +99,13 @@ def check_if_record_is_deployed(domain, dns_record, token):
     """
     Retrieve names servers of the domain, and check DNS record presence.
     """
-    dns_servers = dns.resolver.query(domain, 'NS')
     resolver = dns.resolver.Resolver()
+    dns_servers = resolver.resolve(domain, "NS")
+
     resolver.nameservers = []
     resolver.timeout = 3
     resolver.lifetime = 5
+
     for dns_server in dns_servers:
         addresses = socket.getaddrinfo(dns_server.to_text(), 53, 0, 0, socket.IPPROTO_TCP)
         for family, socktype, proto, canonname, sockaddr in addresses:
@@ -113,9 +114,10 @@ def check_if_record_is_deployed(domain, dns_record, token):
         logger.debug(" + Testing DNS record against %s", ', '.join(resolver.nameservers))
         txt_values = []
         try:
-            txt_records = resolver.query('{}.{}'.format(dns_record, domain), 'TXT')
+            record_name, domain = retrieve_domain_and_record_name(domain)
+            txt_records = resolver.resolve( record_name + '.' + domain, "TXT")
             for txt_record in txt_records:
-                txt_values.append(txt_record.to_text())
+                txt_values.append( txt_record.to_text() )
             for txt_value in txt_values:
                 if token in txt_value:
                     return
