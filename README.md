@@ -29,14 +29,22 @@ $ git clone https://github.com/eachtime/dehydrated-ovh-py3.git hooks/ovh
 $ pip install -r hooks/ovh/requirements.txt
 ```
 
-- Edit the OVH API configuration file with your API credentials
+- OVH API credentials file
 ```
-$ cp hooks/ovh/ovh.conf.dist ./ovh.conf
-$ editor ovh.conf
+$ cp hooks/ovh/ovh-credentials-example /path/to/ovh-credentials
 ```
+
+You can then ether keep the file in this project's directory since it will be ignored by further updates or export the `OVH_HOOK_CREDENTIALS` environment variable that contain the path to the file before executing the dehydrated command.
 
 If you don't have any API credentials, you can create some using the [official OVH credentials page](https://eu.api.ovh.com/createToken/?GET=/domain/zone/*&POST=/domain/zone/*&DELETE=/domain/zone/*). Take care to `Validity` parameter: if you select a value that have an expiration date, you will need to regenerate new credentials.
 
+this file must look like this 
+```
+dns_ovh_endpoint = ovh-eu
+dns_ovh_application_key = YOUR_OVH_APPLICATION_KEY
+dns_ovh_application_secret = YOUR_OVH_SECRET_KEY
+dns_ovh_consumer_key = YOUR_OVH_CONSUMER_KEY
+```
 
 ## Usage
 
