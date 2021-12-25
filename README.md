@@ -29,7 +29,7 @@ $ git clone https://github.com/eachtime/dehydrated-ovh-py3.git hooks/ovh
 $ pip install -r hooks/ovh/requirements.txt
 ```
 
-- OVH API credentials file
+- Create the OVH API credentials file
 ```
 $ cp hooks/ovh/ovh-credentials-example /path/to/ovh-credentials
 ```
