@@ -20,6 +20,7 @@ client = ovh.Client()
 PATTERN_DOMAIN = re.compile(r'^(.*)\.([^\.]+\.[^\.]+)$')
 PATTERN_SUB_DOMAIN = re.compile(r'^(.*)\.([^\.]+)$')
 PATTERN_LOG_LEVEL = re.compile(r'^--level=(\w+)$')
+PATTERN_OVH_CERDENTIALS_PATH = re.compile(r'^--ovh-credentials=([^\]]+)$')
 
 dns_ovh_endpoint="ovh-eu"
 dns_ovh_application_key=""
@@ -29,6 +30,41 @@ credentials_path= os.path.dirname(os.path.realpath(__file__)) + '/ovh-credential
 
 if 'OVH_HOOK_CREDENTIALS' in os.environ and os.path.isfile( os.environ["OVH_HOOK_CREDENTIALS"] ):
   credentials_path = os.environ["OVH_HOOK_CREDENTIALS"]
+
+args = sys.argv[1:]
+if args:
+  for arg in args:
+    credentials_arg = PATTERN_OVH_CERDENTIALS_PATH.findall( arg )
+    if credentials_arg and os.path.isfile( credentials_arg[0] ):
+      credentials_path = credentials_arg[0]
+
+if os.path.isfile( credentials_path ):
+  ovh_lines = open( credentials_path ).readlines()
+
+  for line in ovh_lines:
+    if not line.startswith('#'):
+      words = line.split('=')
+      key = words[0].strip()
+      value = words[1].strip()
+
+      if key == "dns_ovh_endpoint" :
+        dns_ovh_endpoint = value
+      if key == "dns_ovh_application_key" :
+        dns_ovh_application_key = value
+      if key == "dns_ovh_application_secret" :
+        dns_ovh_application_secret = value
+      if key == "dns_ovh_consumer_key" :
+        dns_ovh_consumer_key = value
+
+  client = ovh.Client(
+      endpoint = dns_ovh_endpoint,
+      application_key = dns_ovh_application_key,
+      application_secret = dns_ovh_application_secret,
+      consumer_key = dns_ovh_consumer_key,
+  )
+else :
+  print( 'credentials file not found' )
+  exit
 
 def retrieve_domain_and_record_name(domain):
     """
