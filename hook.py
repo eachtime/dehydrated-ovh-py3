@@ -10,6 +10,7 @@ import dns.exception
 import re
 import sys
 import socket
+import os
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
