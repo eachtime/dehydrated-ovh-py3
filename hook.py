@@ -27,6 +27,8 @@ dns_ovh_application_secret=""
 dns_ovh_consumer_key=""
 credentials_path= os.path.dirname(os.path.realpath(__file__)) + '/ovh-credentials'
 
+if 'OVH_HOOK_CREDENTIALS' in os.environ and os.path.isfile( os.environ["OVH_HOOK_CREDENTIALS"] ):
+  credentials_path = os.environ["OVH_HOOK_CREDENTIALS"]
 
 def retrieve_domain_and_record_name(domain):
     """
