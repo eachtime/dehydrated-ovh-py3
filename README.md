@@ -17,11 +17,11 @@ Based on [kappataumu](https://github.com/kappataumu/letsencrypt-cloudflare-hook)
 $ git clone https://github.com/lukas2511/dehydrated
 ```
 
-- Create a directory for the OVH hook, and clone the [OVH hook repository](https://github.com/rbeuque74/letsencrypt-ovh-hook)
+- Create a directory for the OVH hook, and clone the [OVH hook repository](https://github.com/eachtime/dehydrated-ovh-py3.git)
 ```
 $ cd dehydrated
 $ mkdir hooks
-$ git clone https://github.com/rbeuque74/letsencrypt-ovh-hook hooks/ovh
+$ git clone https://github.com/eachtime/dehydrated-ovh-py3.git hooks/ovh
 ```
 
 - Install dependencies (python libraries)
