@@ -21,6 +21,12 @@ PATTERN_DOMAIN = re.compile(r'^(.*)\.([^\.]+\.[^\.]+)$')
 PATTERN_SUB_DOMAIN = re.compile(r'^(.*)\.([^\.]+)$')
 PATTERN_LOG_LEVEL = re.compile(r'^--level=(\w+)$')
 
+dns_ovh_endpoint="ovh-eu"
+dns_ovh_application_key=""
+dns_ovh_application_secret=""
+dns_ovh_consumer_key=""
+credentials_path= os.path.dirname(os.path.realpath(__file__)) + '/ovh-credentials'
+
 
 def retrieve_domain_and_record_name(domain):
     """
